@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">NFC-Trigger</string>
+
+    <string name="name">Name</string>
+
+    <!-- actions -->
+    <string name="alarm">Alarm</string>
+</resources>
