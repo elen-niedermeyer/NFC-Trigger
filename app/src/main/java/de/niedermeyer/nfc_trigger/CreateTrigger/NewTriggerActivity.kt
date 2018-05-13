@@ -26,17 +26,9 @@ class NewTriggerActivity : AppCompatActivity() {
                 dialog.dismiss()
 
                 if (dialog is ChooseActionDialog) {
-                    var chosenAction = dialog.spinner.selectedItem.toString()
+                    val chosenAction = dialog.spinner.selectedItem.toString()
 
-                    if (chosenAction == "Alarm") {
-                        val alarmDialog = NewAlarmDialog(this@NewTriggerActivity)
-                        val dialogAlarm = alarmDialog.getDialog()
-                        dialogAlarm.setButton(Dialog.BUTTON_POSITIVE, "OK", { dialog, _ ->
-                            // freuen
-                        })
-
-                        dialogAlarm.show()
-                    }
+                    addChosenAction(chosenAction)
                 }
             })
 
@@ -52,6 +44,7 @@ class NewTriggerActivity : AppCompatActivity() {
             val alarmDialog = NewAlarmDialog(this@NewTriggerActivity)
             dialog = alarmDialog.getDialog()
             dialog.setButton(Dialog.BUTTON_POSITIVE, "OK", { dialog, _ ->
+                dialog.dismiss()
                 triggerActions.add(AlarmAction(alarmDialog.hours, alarmDialog.minutes))
             })
         }
