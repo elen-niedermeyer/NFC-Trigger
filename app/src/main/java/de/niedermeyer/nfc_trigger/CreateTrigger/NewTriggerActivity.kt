@@ -2,12 +2,17 @@ package de.niedermeyer.nfc_trigger.CreateTrigger
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.PendingIntent
+import android.content.Intent
+import android.nfc.NfcAdapter
+import android.nfc.Tag
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
 import de.niedermeyer.nfc_trigger.actions.alarm.NewAlarmDialog
+import de.niedermeyer.nfc_trigger.nfc.NFCTagWriter
 import kotlinx.android.synthetic.main.activity_new_trigger.*
 import kotlinx.android.synthetic.main.dialog_spinner.*
 import java.util.*
@@ -15,6 +20,8 @@ import java.util.*
 class NewTriggerActivity : AppCompatActivity() {
 
     val triggerActions = LinkedList<Action>()
+
+    lateinit var nfcWriter: NFCTagWriter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +40,21 @@ class NewTriggerActivity : AppCompatActivity() {
             })
 
             dialog.show()
-
         }
+
+        nfcWriter = NFCTagWriter(this)
+        val pendingIntent = PendingIntent.getActivity(
+                this, 0, Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0)
+        activity_new_trigger_btn_write.setOnClickListener {
+            nfcWriter.activateNfcIntents(pendingIntent)
+            // TODO: visual feedback
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        nfcWriter.deactivateNfcIntents()
     }
 
     private fun addChosenAction(actionName: String) {
@@ -51,4 +71,11 @@ class NewTriggerActivity : AppCompatActivity() {
 
         dialog!!.show()
     }
+
+    override fun onNewIntent(intent: Intent) {
+        val tagFromIntent: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+
+        nfcWriter.writeTag(tagFromIntent, triggerActions)
+    }
+
 }

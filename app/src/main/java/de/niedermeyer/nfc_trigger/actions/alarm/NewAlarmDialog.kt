@@ -13,6 +13,7 @@ class NewAlarmDialog(val context: Context) {
     public fun getDialog(): TimePickerDialog {
 
         val onTimeSetListener = TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+            // TODO: this doesn't work
             hours = selectedHour
             minutes = selectedMinute
         }

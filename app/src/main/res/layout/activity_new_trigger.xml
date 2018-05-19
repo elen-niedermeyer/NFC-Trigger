@@ -14,18 +14,22 @@
         android:ems="10"
         android:hint="@string/name"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@id/activity_new_trigger_actions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/activity_new_trigger_btn_write"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/activity_new_trigger_btn_write"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/write_nfc_tag"
+        app:layout_constraintBottom_toTopOf="@id/activity_new_trigger_actions"
+        app:layout_constraintTop_toBottomOf="@id/activity_new_trigger_name" />
 
     <ListView
         android:id="@+id/activity_new_trigger_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/activity_new_trigger_name" />
+        app:layout_constraintTop_toBottomOf="@id/activity_new_trigger_btn_write" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/activity_new_trigger_btn_add"
