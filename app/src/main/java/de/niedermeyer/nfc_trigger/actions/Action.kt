@@ -1,4 +1,7 @@
 package de.niedermeyer.nfc_trigger.actions
 
-open class Action {
+abstract class Action {
+
+    abstract var NFC_MESSAGE: String?
+        protected set
 }
