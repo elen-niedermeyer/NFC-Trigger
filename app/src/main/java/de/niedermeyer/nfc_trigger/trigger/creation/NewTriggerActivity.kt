@@ -1,4 +1,4 @@
-package de.niedermeyer.nfc_trigger.CreateTrigger
+package de.niedermeyer.nfc_trigger.trigger.creation
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -12,7 +12,7 @@ import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
 import de.niedermeyer.nfc_trigger.actions.alarm.NewAlarmDialog
-import de.niedermeyer.nfc_trigger.nfc.NFCTagWriter
+import de.niedermeyer.nfc_trigger.nfc.writing.NFCTagWriter
 import kotlinx.android.synthetic.main.activity_new_trigger.*
 import kotlinx.android.synthetic.main.dialog_spinner.*
 import java.util.*
@@ -64,7 +64,7 @@ class NewTriggerActivity : AppCompatActivity() {
             val alarmDialog = NewAlarmDialog(this@NewTriggerActivity)
             alarmDialog.setButton(Dialog.BUTTON_POSITIVE, "OK", { dialog, _ ->
                 dialog.dismiss()
-                triggerActions.add(AlarmAction(alarmDialog.hours, alarmDialog.minutes))
+                triggerActions.add(AlarmAction(this@NewTriggerActivity, alarmDialog.hours, alarmDialog.minutes))
             })
             dialog = alarmDialog
         }

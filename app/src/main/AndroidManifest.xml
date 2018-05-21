@@ -3,7 +3,10 @@
     package="de.niedermeyer.nfc_trigger">
 
     <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +22,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateTrigger.NewTriggerActivity"/>
+        <activity android:name="de.niedermeyer.nfc_trigger.trigger.creation.NewTriggerActivity" />
+        <activity android:name=".nfc.reading.NFCReaderActivity">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="@string/url_host"
+                    android:scheme="@string/url_scheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

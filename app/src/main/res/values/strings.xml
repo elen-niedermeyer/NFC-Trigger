@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">NFC-Trigger</string>
+    <string name="url_scheme">app</string>
+    <string name="url_host">de.niedermeyer.NFCTrigger</string>
 
     <string name="name">Name</string>
 
