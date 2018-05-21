@@ -7,4 +7,6 @@
     <string name="alarm">Alarm</string>
 
     <string name="write_nfc_tag">Write to NFC Tag</string>
+
+    <string name="action_alarm_tostring">Alarm: %1$d:%2$d</string>
 </resources>
