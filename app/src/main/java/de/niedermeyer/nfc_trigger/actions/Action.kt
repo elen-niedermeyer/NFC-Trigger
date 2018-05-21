@@ -4,4 +4,6 @@ abstract class Action {
 
     abstract var NFC_MESSAGE: String?
         protected set
+
+    abstract fun doAction()
 }
