@@ -62,11 +62,11 @@ class NewTriggerActivity : AppCompatActivity() {
 
         if (actionName == "Alarm") {
             val alarmDialog = NewAlarmDialog(this@NewTriggerActivity)
-            dialog = alarmDialog.getDialog()
-            dialog.setButton(Dialog.BUTTON_POSITIVE, "OK", { dialog, _ ->
+            alarmDialog.setButton(Dialog.BUTTON_POSITIVE, "OK", { dialog, _ ->
                 dialog.dismiss()
                 triggerActions.add(AlarmAction(alarmDialog.hours, alarmDialog.minutes))
             })
+            dialog = alarmDialog
         }
 
         dialog!!.show()
