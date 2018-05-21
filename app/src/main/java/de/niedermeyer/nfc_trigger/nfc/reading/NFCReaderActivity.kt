@@ -13,7 +13,7 @@ class NFCReaderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nfc_reader)
 
-        nfcReader = NFCTagReader()
+        nfcReader = NFCTagReader(this)
         nfcReader.getActionsFromIntent(intent)
     }
 
