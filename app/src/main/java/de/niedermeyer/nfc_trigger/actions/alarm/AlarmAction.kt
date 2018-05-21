@@ -10,7 +10,7 @@ class AlarmAction(val context: Context, val hours: Int, val minutes: Int) : Acti
     override var NFC_MESSAGE: String? = null
 
     init {
-        NFC_MESSAGE = context.getString(R.string.alarm) + ":$hours,$minutes"
+        NFC_MESSAGE = context.getString(R.string.action_alarm_nfc, context.getString(R.string.action_alarm_name), hours, minutes)
     }
 
     override fun doAction() {

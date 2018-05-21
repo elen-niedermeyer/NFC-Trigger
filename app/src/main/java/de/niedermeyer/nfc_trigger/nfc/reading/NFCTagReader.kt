@@ -51,7 +51,7 @@ class NFCTagReader(val context: Context) {
 
     private fun makeStringToAction(string: String): Action? {
         val parts = string.split(":")
-        if (parts[0] == context.getString(R.string.alarm)) {
+        if (parts[0] == context.getString(R.string.action_alarm_name)) {
             val params = parts[1].split(",")
             return AlarmAction(context, params[0].toInt(), params[1].toInt())
         }

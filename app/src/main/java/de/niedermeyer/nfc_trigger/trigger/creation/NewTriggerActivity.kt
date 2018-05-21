@@ -29,7 +29,7 @@ class NewTriggerActivity : AppCompatActivity() {
 
         activity_new_trigger_btn_add.setOnClickListener {
             val dialog = ChooseActionDialog(this@NewTriggerActivity)
-            dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Next", { dialog, _ ->
+            dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.next), { dialog, _ ->
                 dialog.dismiss()
 
                 if (dialog is ChooseActionDialog) {
@@ -60,9 +60,9 @@ class NewTriggerActivity : AppCompatActivity() {
     private fun addChosenAction(actionName: String) {
         var dialog: Dialog? = null
 
-        if (actionName == "Alarm") {
+        if (actionName == getString(R.string.action_alarm_name)) {
             val alarmDialog = NewAlarmDialog(this@NewTriggerActivity)
-            alarmDialog.setButton(Dialog.BUTTON_POSITIVE, "OK", { dialog, _ ->
+            alarmDialog.setButton(Dialog.BUTTON_POSITIVE, getString(R.string.ok), { dialog, _ ->
                 dialog.dismiss()
                 triggerActions.add(AlarmAction(this@NewTriggerActivity, alarmDialog.hours, alarmDialog.minutes))
             })

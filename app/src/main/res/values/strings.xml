@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">NFC-Trigger</string>
-    <string name="url_scheme">app</string>
-    <string name="url_host">de.niedermeyer.NFCTrigger</string>
+    <string name="uri_scheme">app</string>
+    <string name="uri_host">de.niedermeyer.NFCTrigger</string>
 
+    <string name="cancel">Cancel</string>
     <string name="name">Name</string>
+    <string name="next">Next</string>
+    <string name="ok">OK</string>
 
     <!-- actions -->
-    <string name="alarm">Alarm</string>
+    <string name="action_alarm_name">Alarm</string>
+    <string name="action_alarm_nfc">%1$s:%2$d,%3$d</string>
 
     <string name="write_nfc_tag">Write to NFC Tag</string>
+    <string name="choose_action">Choose an action</string>
+
 </resources>

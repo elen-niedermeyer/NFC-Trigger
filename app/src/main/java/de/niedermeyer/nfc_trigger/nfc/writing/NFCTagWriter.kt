@@ -32,7 +32,7 @@ class NFCTagWriter(private val context: Context) {
             ndef.connect()
 
             // uri
-            val uriRecord = NdefRecord.createUri(context.getString(R.string.url_scheme) + "://" + context.getString(R.string.url_host))
+            val uriRecord = NdefRecord.createUri(context.getString(R.string.uri_scheme) + "://" + context.getString(R.string.uri_host))
             // message
             val mimeRecord = NdefRecord.createMime("text/plain", message.toByteArray(Charset.forName("US-ASCII")))
             // application record

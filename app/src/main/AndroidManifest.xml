@@ -29,8 +29,8 @@
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data
-                    android:host="@string/url_host"
-                    android:scheme="@string/url_scheme" />
+                    android:host="@string/uri_host"
+                    android:scheme="@string/uri_scheme" />
             </intent-filter>
         </activity>
     </application>
