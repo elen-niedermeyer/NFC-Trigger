@@ -1,4 +1,4 @@
-package de.niedermeyer.nfc_trigger.CreateTrigger
+package de.niedermeyer.nfc_trigger.trigger.creation
 
 import android.app.AlertDialog
 import android.content.Context
@@ -7,10 +7,10 @@ import android.widget.ArrayAdapter
 import de.niedermeyer.nfc_trigger.R
 import kotlinx.android.synthetic.main.dialog_spinner.view.*
 
-class ChooseActionDialog(context: Context?) : AlertDialog(context) {
+class ChooseActionDialog(context: Context) : AlertDialog(context) {
 
     init {
-        setTitle("Choose an action")
+        setTitle(context.getString(R.string.choose_action))
 
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_spinner, null)
         val adapter = ArrayAdapter.createFromResource(context, R.array.actions_list, android.R.layout.simple_spinner_item)
@@ -18,7 +18,7 @@ class ChooseActionDialog(context: Context?) : AlertDialog(context) {
         dialogView.spinner.adapter = adapter
         setView(dialogView)
 
-        setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", { dialog, _ -> dialog.dismiss() })
+        setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.cancel), { dialog, _ -> dialog.dismiss() })
     }
 
 }

@@ -7,7 +7,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:padding="8dp"
-    tools:context=".CreateTrigger.NewTriggerActivity">
+    tools:context=".trigger.creation.NewTriggerActivity">
 
     <EditText
         android:id="@+id/activity_new_trigger_name"
