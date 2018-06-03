@@ -8,6 +8,7 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import de.niedermeyer.nfc_trigger.CreateTrigger.ActionListAdapter
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
@@ -15,6 +16,7 @@ import de.niedermeyer.nfc_trigger.actions.alarm.NewAlarmDialog
 import de.niedermeyer.nfc_trigger.nfc.writing.NFCTagWriter
 import kotlinx.android.synthetic.main.activity_new_trigger.*
 import kotlinx.android.synthetic.main.dialog_spinner.*
+import org.jetbrains.anko.toast
 import java.util.*
 
 class NewTriggerActivity : AppCompatActivity() {
@@ -49,6 +51,9 @@ class NewTriggerActivity : AppCompatActivity() {
             nfcWriter.activateNfcIntents(pendingIntent)
             // TODO: visual feedback
         }
+
+        val adapter = ActionListAdapter(this@NewTriggerActivity, triggerActions)
+        activity_new_trigger_actions.adapter = adapter
     }
 
     override fun onPause() {
@@ -64,7 +69,10 @@ class NewTriggerActivity : AppCompatActivity() {
             val alarmDialog = NewAlarmDialog(this@NewTriggerActivity)
             alarmDialog.setButton(Dialog.BUTTON_POSITIVE, getString(R.string.ok), { dialog, _ ->
                 dialog.dismiss()
-                triggerActions.add(AlarmAction(this@NewTriggerActivity, alarmDialog.hours, alarmDialog.minutes))
+                val action = AlarmAction(this@NewTriggerActivity, alarmDialog.hours, alarmDialog.minutes)
+                triggerActions.add(action)
+
+                toast("$action wurde hinzugefügt")
             })
             dialog = alarmDialog
         }
