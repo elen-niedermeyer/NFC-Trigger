@@ -1,15 +1,15 @@
-package de.niedermeyer.nfc_trigger.nfc
+package de.niedermeyer.nfc_trigger.nfc.writing
 
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.*
 import android.nfc.tech.Ndef
-import de.niedermeyer.nfc_trigger.TriggerOverviewActivity
+import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import java.io.IOException
+import java.nio.charset.Charset
 
 class NFCTagWriter(private val context: Context) {
 
@@ -30,8 +30,16 @@ class NFCTagWriter(private val context: Context) {
         val ndef = Ndef.get(tag)
         try {
             ndef.connect()
-            val mimeRecord = NdefRecord.createMime("text/plain", message.toByteArray())
-            ndef.writeNdefMessage(NdefMessage(mimeRecord))
+
+            // uri
+            val uriRecord = NdefRecord.createUri(context.getString(R.string.uri_scheme) + "://" + context.getString(R.string.uri_host))
+            // message
+            val mimeRecord = NdefRecord.createMime("text/plain", message.toByteArray(Charset.forName("US-ASCII")))
+            // application record
+            val appRecord = NdefRecord.createApplicationRecord(context.packageName)
+            // write full message
+            ndef.writeNdefMessage(NdefMessage(arrayOf(uriRecord, mimeRecord, appRecord)))
+
             ndef.close()
             // TODO: message
 
