@@ -1,4 +1,4 @@
-package de.niedermeyer.nfc_trigger.nfc.enabling
+package de.niedermeyer.nfc_trigger.nfc.setting
 
 import android.app.AlertDialog
 import android.content.Context
@@ -8,20 +8,28 @@ import android.provider.Settings
 import de.niedermeyer.nfc_trigger.R
 
 
-class NFCEnabler(val context: Context) {
+class NFCSettingChecker(val context: Context) {
 
-    fun proofNFC() {
+    /**
+     * Displays a dialog is NFC is not enabled. Does nothing otherwise.
+     */
+    fun checkNFCSetting() {
         if (!isNFCEnabled()) {
             displayNFCSettingsDialog()
         }
     }
 
+    /**
+     * Gets an {@link NFCAdapter} and check if NFC is enabled.
+     *
+     * @return true if NFC is enabled, false otherwise
+     */
     fun isNFCEnabled(): Boolean {
         val nfcAdapter = NfcAdapter.getDefaultAdapter(context)
         return nfcAdapter.isEnabled
     }
 
-    fun displayNFCSettingsDialog() {
+    private fun displayNFCSettingsDialog() {
         AlertDialog.Builder(context)
                 .setTitle(R.string.enable_nfc)
                 .setMessage(R.string.enable_nfc_message)

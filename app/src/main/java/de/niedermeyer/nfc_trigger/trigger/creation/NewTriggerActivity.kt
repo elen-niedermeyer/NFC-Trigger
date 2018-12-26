@@ -12,7 +12,7 @@ import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
 import de.niedermeyer.nfc_trigger.actions.alarm.NewAlarmDialog
-import de.niedermeyer.nfc_trigger.nfc.enabling.NFCEnabler
+import de.niedermeyer.nfc_trigger.nfc.setting.NFCSettingChecker
 import de.niedermeyer.nfc_trigger.nfc.writing.NFCTagWriter
 import kotlinx.android.synthetic.main.activity_new_trigger.*
 import kotlinx.android.synthetic.main.dialog_spinner.*
@@ -55,12 +55,12 @@ class NewTriggerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val enabler = NFCEnabler(this)
-        if (enabler.isNFCEnabled()) {
+        val nfcChecker = NFCSettingChecker(this)
+        if (nfcChecker.isNFCEnabled()) {
             activity_new_trigger_btn_write.isEnabled = true;
         } else {
             activity_new_trigger_btn_write.isEnabled = false;
-            enabler.displayNFCSettingsDialog()
+            nfcChecker.checkNFCSetting()
         }
     }
 
