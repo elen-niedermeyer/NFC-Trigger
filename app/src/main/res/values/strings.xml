@@ -9,8 +9,7 @@
     <string name="ok">OK</string>
 
     <!-- actions -->
-    <string name="action_alarm_name">Alarm</string>
-    <string name="action_alarm_nfc">%1$s:%2$d,%3$d</string>
+    <string name="action_alarm_type">ALARM</string>
 
     <string name="write_nfc_tag">Write to NFC Tag</string>
     <string name="choose_action">Choose an action</string>

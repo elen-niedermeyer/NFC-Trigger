@@ -12,7 +12,7 @@ class NewAlarmDialog(context: Context) : TimePickerDialog(context, null, 0, 0, t
     var minutes = 0
 
     init {
-        this.setTitle(context.getString(R.string.action_alarm_name))
+        this.setTitle(context.getString(R.string.action_alarm_type))
         this.setButton(Dialog.BUTTON_NEGATIVE, context.getString(R.string.cancel), { dialog, _ -> dialog.cancel() })
     }
 

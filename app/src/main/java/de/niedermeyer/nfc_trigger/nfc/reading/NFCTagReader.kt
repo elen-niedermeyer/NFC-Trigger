@@ -7,21 +7,25 @@ import android.nfc.NfcAdapter
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
+import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.json.JSON
+import kotlinx.serialization.parse
+import org.json.JSONArray
+import org.json.JSONObject
 import java.nio.charset.Charset
 import java.util.*
 
 class NFCTagReader(val context: Context) {
 
-    fun getActionsFromIntent(intent: Intent): List<Action> {
-        val text = getMessageFromIntent(intent)
-        val stringArray = parseActions(text)
+    @UseExperimental(ImplicitReflectionSerializer::class)
+    fun getActionsFromIntent(intent: Intent): List<Action?> {
+        val jsonString = getMessageFromIntent(intent)
+        val jsonArray = JSONArray(jsonString)
 
-        val actions = LinkedList<Action>()
-        stringArray.forEach {
-            val action = makeStringToAction(it)
-            if (action != null) {
-                actions.add(action)
-            }
+        val actions = LinkedList<Action?>()
+        for (i in 0..(jsonArray.length() - 1)) {
+            val item = jsonArray.getJSONObject(i)
+            actions.add(convertJsonObjectToAction(item))
         }
         return actions
     }
@@ -44,16 +48,11 @@ class NFCTagReader(val context: Context) {
         return text
     }
 
-    private fun parseActions(text: String): List<String> {
-        val actions = text.split("$")
-        return actions.subList(1, actions.size - 1)
-    }
-
-    private fun makeStringToAction(string: String): Action? {
-        val parts = string.split(":")
-        if (parts[0] == context.getString(R.string.action_alarm_name)) {
-            val params = parts[1].split(",")
-            return AlarmAction(context, params[0].toInt(), params[1].toInt())
+    private fun convertJsonObjectToAction(json: JSONObject): Action? {
+        val actionType = json.getString("TYPE")
+        if (actionType == context.getString(R.string.action_alarm_type)) {
+            val params = json.getJSONArray("VALUES")
+            return AlarmAction(context, Integer.parseInt(params.getString(0)), Integer.parseInt(params.getString(1)))
         }
 
         return null

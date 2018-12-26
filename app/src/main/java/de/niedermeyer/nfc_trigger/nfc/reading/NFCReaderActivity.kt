@@ -14,7 +14,7 @@ class NFCReaderActivity : AppCompatActivity() {
         setContentView(R.layout.activity_nfc_reader)
 
         nfcReader = NFCTagReader(this)
-        nfcReader.getActionsFromIntent(intent).forEach { it.doAction() }
+        nfcReader.getActionsFromIntent(intent).forEach { if (it != null) it.doAction() }
     }
 
     override fun onNewIntent(intent: Intent) {

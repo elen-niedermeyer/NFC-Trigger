@@ -60,7 +60,7 @@ class NewTriggerActivity : AppCompatActivity() {
     private fun addChosenAction(actionName: String) {
         var dialog: Dialog? = null
 
-        if (actionName == getString(R.string.action_alarm_name)) {
+        if (actionName == getString(R.string.action_alarm_type)) {
             val alarmDialog = NewAlarmDialog(this@NewTriggerActivity)
             alarmDialog.setButton(Dialog.BUTTON_POSITIVE, getString(R.string.ok), { dialog, _ ->
                 dialog.dismiss()
