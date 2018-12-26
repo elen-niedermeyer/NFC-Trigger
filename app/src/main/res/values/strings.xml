@@ -14,6 +14,7 @@
 
     <string name="write_nfc_tag">Write to NFC Tag</string>
     <string name="choose_action">Choose an action</string>
+    <string name="action_added">%1$s was added</string>
 
     <string name="action_alarm_tostring">Alarm: %1$02d:%2$02d</string>
 

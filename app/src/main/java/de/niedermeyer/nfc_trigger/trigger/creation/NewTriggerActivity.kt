@@ -1,8 +1,8 @@
 package de.niedermeyer.nfc_trigger.trigger.creation
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.Tag
@@ -12,7 +12,6 @@ import de.niedermeyer.nfc_trigger.CreateTrigger.ActionListAdapter
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
-import de.niedermeyer.nfc_trigger.actions.alarm.NewAlarmDialog
 import de.niedermeyer.nfc_trigger.nfc.writing.NFCTagWriter
 import kotlinx.android.synthetic.main.activity_new_trigger.*
 import kotlinx.android.synthetic.main.dialog_spinner.*
@@ -31,7 +30,7 @@ class NewTriggerActivity : AppCompatActivity() {
 
         activity_new_trigger_btn_add.setOnClickListener {
             val dialog = ChooseActionDialog(this@NewTriggerActivity)
-            dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.next), { dialog, _ ->
+            dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.next)) { dialog, _ ->
                 dialog.dismiss()
 
                 if (dialog is ChooseActionDialog) {
@@ -39,7 +38,7 @@ class NewTriggerActivity : AppCompatActivity() {
 
                     addChosenAction(chosenAction)
                 }
-            })
+            }
 
             dialog.show()
         }
@@ -52,8 +51,11 @@ class NewTriggerActivity : AppCompatActivity() {
             // TODO: visual feedback
         }
 
-        val adapter = ActionListAdapter(this@NewTriggerActivity, triggerActions)
-        activity_new_trigger_actions.adapter = adapter
+        updateActionList()
+    }
+
+    private fun updateActionList(){
+        activity_new_trigger_actions.adapter = ActionListAdapter(this@NewTriggerActivity, triggerActions)
     }
 
     override fun onPause() {
@@ -63,21 +65,18 @@ class NewTriggerActivity : AppCompatActivity() {
     }
 
     private fun addChosenAction(actionName: String) {
-        var dialog: Dialog? = null
 
         if (actionName == getString(R.string.action_alarm_name)) {
-            val alarmDialog = NewAlarmDialog(this@NewTriggerActivity)
-            alarmDialog.setButton(Dialog.BUTTON_POSITIVE, getString(R.string.ok), { dialog, _ ->
-                dialog.dismiss()
-                val action = AlarmAction(this@NewTriggerActivity, alarmDialog.hours, alarmDialog.minutes)
-                triggerActions.add(action)
-
-                toast("$action wurde hinzugefügt")
-            })
-            dialog = alarmDialog
+            val timePicker = TimePickerDialog(this@NewTriggerActivity,
+                    TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                        val action = AlarmAction(this@NewTriggerActivity, hourOfDay, minute)
+                        triggerActions.add(action)
+                        toast(getString(R.string.action_added, action.toString()))
+                        updateActionList()
+                    },
+                    0, 0, true)
+            timePicker.show()
         }
-
-        dialog!!.show()
     }
 
     override fun onNewIntent(intent: Intent) {
