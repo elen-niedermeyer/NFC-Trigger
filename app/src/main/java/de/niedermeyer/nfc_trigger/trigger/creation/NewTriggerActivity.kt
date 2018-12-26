@@ -66,7 +66,7 @@ class NewTriggerActivity : AppCompatActivity() {
 
     private fun addChosenAction(actionName: String) {
 
-        if (actionName == getString(R.string.action_alarm_name)) {
+        if (actionName == getString(R.string.action_alarm_type)) {
             val timePicker = TimePickerDialog(this@NewTriggerActivity,
                     TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                         val action = AlarmAction(this@NewTriggerActivity, hourOfDay, minute)
