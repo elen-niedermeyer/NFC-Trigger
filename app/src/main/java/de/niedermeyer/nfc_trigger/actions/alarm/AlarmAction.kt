@@ -20,4 +20,8 @@ class AlarmAction(val context: Context, val hours: Int, val minutes: Int) : Acti
                 .putExtra(AlarmClock.EXTRA_MINUTES, minutes)
         context.startActivity(intent)
     }
+
+    override fun toString(): String {
+        return context.getString(R.string.action_alarm_tostring, hours, minutes)
+    }
 }
