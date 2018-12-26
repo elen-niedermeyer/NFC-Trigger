@@ -3,15 +3,21 @@
     <string name="uri_scheme">app</string>
     <string name="uri_host">de.niedermeyer.NFCTrigger</string>
 
+    <!-- common -->
     <string name="cancel">Cancel</string>
     <string name="name">Name</string>
     <string name="next">Next</string>
     <string name="ok">OK</string>
+    <string name="settings">Open settings</string>
 
     <!-- actions -->
     <string name="action_alarm_type">ALARM</string>
 
     <string name="write_nfc_tag">Write to NFC Tag</string>
     <string name="choose_action">Choose an action</string>
+
+    <!-- enable nfc -->
+    <string name="enable_nfc">Enable NFC</string>
+    <string name="enable_nfc_message">You need to enable the NFC setting to use this app.</string>
 
 </resources>
