@@ -4,8 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.nfc.NfcAdapter
-import android.os.Build
 import android.provider.Settings
+import de.niedermeyer.nfc_trigger.R
 
 
 class NFCEnabler(val context: Context) {
@@ -23,21 +23,16 @@ class NFCEnabler(val context: Context) {
 
     fun displayNFCSettingsDialog() {
         AlertDialog.Builder(context)
-                .setTitle("Enable NFC")
-                .setMessage("Please, enable your NFC to use this app.")
-                .setPositiveButton("Open settings", { _, _ -> openNFCSettings() })
-                .setNegativeButton("Cancel", { dialog, _ -> dialog.dismiss() })
+                .setTitle(R.string.enable_nfc)
+                .setMessage(R.string.enable_nfc_message)
+                .setPositiveButton(R.string.settings, { _, _ -> openNFCSettings() })
+                .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
                 .show()
     }
 
     private fun openNFCSettings() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            val intent = Intent(Settings.ACTION_NFC_SETTINGS)
-            context.startActivity(intent)
-        } else {
-            val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
-            context.startActivity(intent)
-        }
+        val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+        context.startActivity(intent)
     }
 
 }
