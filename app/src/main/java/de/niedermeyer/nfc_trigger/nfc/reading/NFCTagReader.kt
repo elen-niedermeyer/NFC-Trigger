@@ -6,6 +6,7 @@ import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
+import de.niedermeyer.nfc_trigger.actions.ActionConstants
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.json.JSON
@@ -49,10 +50,12 @@ class NFCTagReader(val context: Context) {
     }
 
     private fun convertJsonObjectToAction(json: JSONObject): Action? {
-        val actionType = json.getString("TYPE")
-        if (actionType == context.getString(R.string.action_alarm_type)) {
-            val params = json.getJSONArray("VALUES")
-            return AlarmAction(context, Integer.parseInt(params.getString(0)), Integer.parseInt(params.getString(1)))
+        val actionType = json.getInt("TYPE")
+        when (actionType) {
+            ActionConstants.ALARM -> {
+                val params = json.getJSONArray("VAL")
+                return AlarmAction(context, params.getInt(0), params.getInt(1))
+            }
         }
 
         return null
