@@ -16,6 +16,16 @@
         android:id="@+id/activity_new_trigger_action_bar_btn_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/activity_new_trigger_action_bar_btn_delete"
         app:srcCompat="@drawable/ic_action_edit"
-        app:layout_constraintRight_toRightOf="parent"/>
+        android:contentDescription="@string/content_desc_edit_action" />
+
+    <ImageButton
+        android:id="@+id/activity_new_trigger_action_bar_btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_delete"
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/content_desc_delete_action" />
+
 </android.support.constraint.ConstraintLayout>
