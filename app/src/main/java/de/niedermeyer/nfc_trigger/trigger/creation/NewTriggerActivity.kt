@@ -51,8 +51,21 @@ class NewTriggerActivity : AppCompatActivity() {
             // TODO: visual feedback
         }
 
-        adapter = ActionListAdapter(this@NewTriggerActivity, LinkedList())
+        // restore saved actions from instance state
+        val savedActions = savedInstanceState?.getSerializable("savedActions")
+        if (savedActions is LinkedList<*> && savedActions.count() > 0) {
+            adapter = ActionListAdapter(this@NewTriggerActivity, savedActions as LinkedList<Action>)
+        } else {
+            adapter = ActionListAdapter(this@NewTriggerActivity, LinkedList())
+        }
+
         activity_new_trigger_actions.adapter = adapter
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.putSerializable("savedActions", adapter.values)
     }
 
     override fun onResume() {
