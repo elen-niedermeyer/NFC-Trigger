@@ -21,9 +21,8 @@ import java.util.*
 
 class NewTriggerActivity : AppCompatActivity() {
 
-    val triggerActions = LinkedList<Action>()
-
-    lateinit var nfcWriter: NFCTagWriter
+    private lateinit var adapter : ActionListAdapter
+    private lateinit var nfcWriter: NFCTagWriter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +51,8 @@ class NewTriggerActivity : AppCompatActivity() {
             // TODO: visual feedback
         }
 
-        updateActionList()
-    }
-
-    private fun updateActionList(){
-        activity_new_trigger_actions.adapter = ActionListAdapter(this@NewTriggerActivity, triggerActions)
+        adapter = ActionListAdapter(this@NewTriggerActivity, LinkedList())
+        activity_new_trigger_actions.adapter = adapter
     }
 
     override fun onResume() {
@@ -83,9 +79,8 @@ class NewTriggerActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(this@NewTriggerActivity,
                     TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                         val action = AlarmAction(this@NewTriggerActivity, hourOfDay, minute)
-                        triggerActions.add(action)
+                        adapter.add(action)
                         toast(getString(R.string.action_added, action.toString()))
-                        updateActionList()
                     },
                     0, 0, true)
             timePicker.show()
@@ -95,7 +90,7 @@ class NewTriggerActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         val tagFromIntent: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
 
-        nfcWriter.writeTag(tagFromIntent, triggerActions)
+        nfcWriter.writeTag(tagFromIntent, adapter.values)
     }
 
 }

@@ -30,12 +30,18 @@ class ActionListAdapter(private val adapterContext: Context, var values: LinkedL
                         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                             currentAction.hours = hourOfDay
                             currentAction.minutes = minute
-                            actionBarLayout.activity_new_trigger_action_bar_text.text = currentAction.toString()
+                            notifyDataSetChanged()
                             context.toast(context.getString(R.string.action_updated, currentAction.toString()))
                         },
                         currentAction.hours, currentAction.minutes, true)
                 timePicker.show()
             }
+        }
+
+        // set functionality for action delete button
+        actionBarLayout.activity_new_trigger_action_bar_btn_delete.setOnClickListener {
+            remove(currentAction)
+            context.toast(context.getString(R.string.action_deleted, currentAction.toString()))
         }
 
         return actionBarLayout
