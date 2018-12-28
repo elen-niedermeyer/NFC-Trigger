@@ -9,7 +9,7 @@ import kotlinx.serialization.json.JSON
 import kotlinx.serialization.stringify
 import org.json.JSONArray
 
-class AlarmAction(val context: Context, val hours: Int, val minutes: Int) : Action() {
+class AlarmAction(val context: Context, var hours: Int, var minutes: Int) : Action() {
     override var TYPE: String = context.getString(R.string.action_alarm_type)
 
     override var VALUES: Array<String> = arrayOf(hours.toString(), minutes.toString())
