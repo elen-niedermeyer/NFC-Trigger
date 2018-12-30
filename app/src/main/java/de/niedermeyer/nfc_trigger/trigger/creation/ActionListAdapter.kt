@@ -1,4 +1,4 @@
-package de.niedermeyer.nfc_trigger.CreateTrigger
+package de.niedermeyer.nfc_trigger.trigger.creation
 
 import android.app.TimePickerDialog
 import android.content.Context
