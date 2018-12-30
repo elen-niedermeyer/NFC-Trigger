@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 abstract class Action {
 
-    abstract var TYPE: String
+    abstract var TYPE: Int
 
-    abstract var VALUES: Array<String>
+    abstract var VAL: Array<Int>
 
     abstract fun doAction()
 }

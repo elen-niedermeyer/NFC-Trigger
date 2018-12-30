@@ -8,7 +8,6 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import de.niedermeyer.nfc_trigger.CreateTrigger.ActionListAdapter
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
@@ -90,7 +89,7 @@ class NewTriggerActivity : AppCompatActivity() {
 
     private fun addChosenAction(actionName: String) {
 
-        if (actionName == getString(R.string.action_alarm_type)) {
+        if (actionName == getString(R.string.action_alarm_name)) {
             val timePicker = TimePickerDialog(this@NewTriggerActivity,
                     TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                         val action = AlarmAction(this@NewTriggerActivity, hourOfDay, minute)
