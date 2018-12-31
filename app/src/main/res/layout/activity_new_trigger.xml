@@ -16,31 +16,42 @@
         android:ems="10"
         android:hint="@string/name"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@id/activity_new_trigger_btn_write"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/activity_new_trigger_btn_add"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <Button
-        android:id="@+id/activity_new_trigger_btn_write"
+        android:id="@+id/activity_new_trigger_btn_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/write_nfc_tag"
+        android:text="@string/add_action"
         app:layout_constraintBottom_toTopOf="@id/activity_new_trigger_actions"
+        app:layout_constraintEnd_toEndOf="@id/activity_new_trigger_name"
+        app:layout_constraintStart_toStartOf="@id/activity_new_trigger_name"
         app:layout_constraintTop_toBottomOf="@id/activity_new_trigger_name" />
 
     <ListView
         android:id="@+id/activity_new_trigger_actions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/activity_new_trigger_btn_write" />
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/activity_new_trigger_btn_write"
+        app:layout_constraintEnd_toEndOf="@id/activity_new_trigger_btn_add"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/activity_new_trigger_btn_add"
+        app:layout_constraintTop_toBottomOf="@id/activity_new_trigger_btn_add" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/activity_new_trigger_btn_add"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/activity_new_trigger_btn_write"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/activity_new_trigger_actions"
+        app:layout_constraintStart_toStartOf="@id/activity_new_trigger_actions"
+        app:layout_constraintEnd_toEndOf="@id/activity_new_trigger_actions"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_action_add" />
+        android:text="@string/write_nfc_tag" />
 
 
 </android.support.constraint.ConstraintLayout>

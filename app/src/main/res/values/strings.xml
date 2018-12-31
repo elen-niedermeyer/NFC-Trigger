@@ -15,11 +15,18 @@
     <string name="action_alarm_tostring">Alarm: %1$02d:%2$02d</string>
 
     <string name="write_nfc_tag">Write to NFC Tag</string>
+    <string name="add_action">Add Action</string>
     <string name="choose_action">Choose an action</string>
     <string name="action_added">%1$s was added</string>
+    <string name="action_updated">%1$s was updated</string>
+    <string name="action_deleted">%1$s was deleted</string>
 
     <!-- enable nfc -->
     <string name="enable_nfc">Enable NFC</string>
     <string name="enable_nfc_message">You need to enable the NFC setting to use this app.</string>
+
+    <!-- image content descriptions -->
+    <string name="content_desc_delete_action">Delete Action</string>
+    <string name="content_desc_edit_action">Edit Action</string>
 
 </resources>

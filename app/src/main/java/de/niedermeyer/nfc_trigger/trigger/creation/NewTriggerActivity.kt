@@ -8,7 +8,6 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import de.niedermeyer.nfc_trigger.CreateTrigger.ActionListAdapter
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
@@ -21,17 +20,18 @@ import java.util.*
 
 class NewTriggerActivity : AppCompatActivity() {
 
-    val triggerActions = LinkedList<Action>()
-
-    lateinit var nfcWriter: NFCTagWriter
+    private lateinit var adapter : ActionListAdapter
+    private lateinit var nfcWriter: NFCTagWriter
+    
+    private val actionsKey: String = "savedActions"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_trigger)
 
         activity_new_trigger_btn_add.setOnClickListener {
-            val dialog = ChooseActionDialog(this@NewTriggerActivity)
-            dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.next)) { dialog, _ ->
+            val chooseActionDialog = ChooseActionDialog(this@NewTriggerActivity)
+            chooseActionDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.next)) { dialog, _ ->
                 dialog.dismiss()
 
                 if (dialog is ChooseActionDialog) {
@@ -41,7 +41,7 @@ class NewTriggerActivity : AppCompatActivity() {
                 }
             }
 
-            dialog.show()
+            chooseActionDialog.show()
         }
 
         nfcWriter = NFCTagWriter(this)
@@ -52,11 +52,21 @@ class NewTriggerActivity : AppCompatActivity() {
             // TODO: visual feedback
         }
 
-        updateActionList()
+        // restore saved actions from instance state
+        val savedActions = savedInstanceState?.getSerializable(actionsKey)
+        if (savedActions is LinkedList<*> && savedActions.count() > 0) {
+            adapter = ActionListAdapter(this@NewTriggerActivity, savedActions as LinkedList<Action>)
+        } else {
+            adapter = ActionListAdapter(this@NewTriggerActivity, LinkedList())
+        }
+
+        activity_new_trigger_actions.adapter = adapter
     }
 
-    private fun updateActionList(){
-        activity_new_trigger_actions.adapter = ActionListAdapter(this@NewTriggerActivity, triggerActions)
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.putSerializable(actionsKey, adapter.values)
     }
 
     override fun onResume() {
@@ -64,9 +74,9 @@ class NewTriggerActivity : AppCompatActivity() {
 
         val nfcChecker = NFCSettingChecker(this)
         if (nfcChecker.isNFCEnabled()) {
-            activity_new_trigger_btn_write.isEnabled = true;
+            activity_new_trigger_btn_write.isEnabled = true
         } else {
-            activity_new_trigger_btn_write.isEnabled = false;
+            activity_new_trigger_btn_write.isEnabled = false
             nfcChecker.checkNFCSetting()
         }
     }
@@ -83,9 +93,8 @@ class NewTriggerActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(this@NewTriggerActivity,
                     TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                         val action = AlarmAction(this@NewTriggerActivity, hourOfDay, minute)
-                        triggerActions.add(action)
+                        adapter.add(action)
                         toast(getString(R.string.action_added, action.toString()))
-                        updateActionList()
                     },
                     0, 0, true)
             timePicker.show()
@@ -95,7 +104,7 @@ class NewTriggerActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         val tagFromIntent: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
 
-        nfcWriter.writeTag(tagFromIntent, triggerActions)
+        nfcWriter.writeTag(tagFromIntent, adapter.values)
     }
 
 }
