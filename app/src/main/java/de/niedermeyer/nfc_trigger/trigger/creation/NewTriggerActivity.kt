@@ -124,7 +124,7 @@ class NewTriggerActivity : AppCompatActivity() {
             // Android Oreo or newer
             v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
-            // older than Android Oreo
+            // older version than Android Oreo
             // deprecated in API 26
             v.vibrate(200)
         }

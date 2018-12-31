@@ -34,6 +34,18 @@ class NFCTagWriter(private val context: Context) {
     }
 
     /**
+     * Returns all the intent filters that are needed to detect an NFC tag
+     *
+     * @return an array of intent filters
+     */
+    private fun getIntentFilters(): Array<IntentFilter> {
+        val tagDetected = IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
+        val ndefDetected = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED)
+        val techDetected = IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED)
+        return arrayOf(techDetected, tagDetected, ndefDetected)
+    }
+
+    /**
      * Disables the possiblity to detect an NFC tag in writing mode.
      */
     fun deactivateNfcIntents() {
@@ -44,7 +56,12 @@ class NFCTagWriter(private val context: Context) {
      * Creates a message from the given list of actions.
      * Creates an NDEF with the message and an URI for writing it on the NFC tag.
      *
-     * @param
+     * @param tag NFC tag detected by the activity, needed by {@link #writeMessageToTag}
+     * @param actions list of actions to write to NFC tag, processed by {@link #createMessage}
+     *
+     * @return the result of {@link #writeMessageToTag}; true if writing to NFC tag was successful, false otherwise
+     *
+     * @throws Exception when thrown in {@link #writeMessageToTag}
      */
     fun writeTag(tag: Tag, actions: List<Action>): Boolean {
         val message: String = createMessage(actions)
@@ -60,7 +77,11 @@ class NFCTagWriter(private val context: Context) {
 
 
     /**
-     * Creates a message that contains the given actions.
+     * Creates a message that contains the given actions. Returns them as JSON string.
+     *
+     * @param actions list of actions to write to NFC tag
+     *
+     * @return a JSON string for writing to NFC tag
      *
      */
     @UseExperimental(ImplicitReflectionSerializer::class)
@@ -68,20 +89,31 @@ class NFCTagWriter(private val context: Context) {
         return JSON.stringify(Action.serializer().list, actions)
     }
 
+    /**
+     * Writes the given message to the given tag.
+     *
+     * @param nfcMessage
+     * @param tag NFC tag detected by the activity
+     *
+     * @return true if writing to NFC tag was successful, false otherwise
+     *
+     * @throws Exception when there was a failure with writing the NFC tag
+     */
     private fun writeMessageToTag(nfcMessage: NdefMessage, tag: Tag?): Boolean {
         val nDefTag = Ndef.get(tag)
         nDefTag?.let {
             it.connect()
 
+            // proof tag's size
             var maxsize = it.maxSize
             var size = nfcMessage.toByteArray().size
-
             if (it.maxSize < nfcMessage.toByteArray().size) {
                 // Message to large to write to NFC tag
                 throw Exception(context.getString(R.string.writing_error_size))
             }
 
             if (it.isWritable) {
+                // write to tag
                 it.writeNdefMessage(nfcMessage)
                 it.close()
                 // Message is written to tag
@@ -95,6 +127,7 @@ class NFCTagWriter(private val context: Context) {
 
         val nDefFormatableTag = NdefFormatable.get(tag)
         nDefFormatableTag?.let {
+            // write to tag
             it.connect()
             it.format(nfcMessage)
             it.close()
@@ -104,14 +137,6 @@ class NFCTagWriter(private val context: Context) {
 
         // NDEF is not supported
         throw Exception(context.getString(R.string.writing_error_support))
-    }
-
-
-    private fun getIntentFilters(): Array<IntentFilter> {
-        val tagDetected = IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
-        val ndefDetected = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED)
-        val techDetected = IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED)
-        return arrayOf(techDetected, tagDetected, ndefDetected)
     }
 
 }
