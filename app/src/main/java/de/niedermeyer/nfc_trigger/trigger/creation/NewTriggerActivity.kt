@@ -3,10 +3,14 @@ package de.niedermeyer.nfc_trigger.trigger.creation
 import android.app.AlertDialog
 import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.Tag
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.support.v7.app.AppCompatActivity
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
@@ -20,14 +24,21 @@ import java.util.*
 
 class NewTriggerActivity : AppCompatActivity() {
 
-    private lateinit var adapter : ActionListAdapter
+    private lateinit var adapter: ActionListAdapter
     private lateinit var nfcWriter: NFCTagWriter
-    
+
     private val actionsKey: String = "savedActions"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_trigger)
+
+        nfcWriter = NFCTagWriter(this)
+        val pendingIntent = PendingIntent.getActivity(
+                this, 0, Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0)
+        activity_new_trigger_btn_write.setOnClickListener {
+            nfcWriter.activateNfcIntents(pendingIntent)
+        }
 
         activity_new_trigger_btn_add.setOnClickListener {
             val chooseActionDialog = ChooseActionDialog(this@NewTriggerActivity)
@@ -42,14 +53,6 @@ class NewTriggerActivity : AppCompatActivity() {
             }
 
             chooseActionDialog.show()
-        }
-
-        nfcWriter = NFCTagWriter(this)
-        val pendingIntent = PendingIntent.getActivity(
-                this, 0, Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0)
-        activity_new_trigger_btn_write.setOnClickListener {
-            nfcWriter.activateNfcIntents(pendingIntent)
-            // TODO: visual feedback
         }
 
         // restore saved actions from instance state
@@ -104,7 +107,29 @@ class NewTriggerActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         val tagFromIntent: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
 
-        nfcWriter.writeTag(tagFromIntent, adapter.values)
+        try {
+            if (nfcWriter.writeTag(tagFromIntent, adapter.values)) {
+                toast(getString(R.string.writing_success))
+                vibrateShortly()
+            }
+        } catch (e: Exception) {
+            e.message?.let { toast(it) }
+            vibrateShortly()
+        }
     }
+
+    private fun vibrateShortly() {
+        val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Android Oreo or newer
+            v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            // older than Android Oreo
+            // deprecated in API 26
+            v.vibrate(200)
+        }
+
+    }
+
 
 }
