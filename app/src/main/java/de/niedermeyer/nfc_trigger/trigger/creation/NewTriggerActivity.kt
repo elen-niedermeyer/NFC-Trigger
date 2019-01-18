@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.Tag
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
+import de.niedermeyer.nfc_trigger.actions.wifi.WifiAction
 import de.niedermeyer.nfc_trigger.nfc.setting.NFCSettingChecker
 import de.niedermeyer.nfc_trigger.nfc.writing.NFCTagWriter
 import kotlinx.android.synthetic.main.activity_new_trigger.*
@@ -101,6 +103,29 @@ class NewTriggerActivity : AppCompatActivity() {
                     },
                     0, 0, true)
             timePicker.show()
+        } else if (actionName == getString(R.string.action_wifi_name)) {
+            val items = arrayOf(
+                    getString(R.string.on).toUpperCase(),
+                    getString(R.string.off).toUpperCase())
+            val dialog = this.let {
+                val builder = AlertDialog.Builder(it)
+                builder
+                        .setTitle(R.string.action_wifi_dialog_title)
+                        .setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { dialog, itemIndex ->
+                            var action: WifiAction? = null
+                            if (itemIndex == 0) {
+                                action = WifiAction(this@NewTriggerActivity, WifiAction.WIFI_ON)
+                            } else {
+                                action = WifiAction(this@NewTriggerActivity, WifiAction.WIFI_OFF)
+                            }
+                            adapter.add(action)
+                            toast(getString(R.string.action_added, action.toString()))
+                            dialog.dismiss()
+                        })
+                builder.create()
+            }
+            dialog.show()
+
         }
     }
 
@@ -130,6 +155,5 @@ class NewTriggerActivity : AppCompatActivity() {
         }
 
     }
-
 
 }
