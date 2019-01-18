@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.Tag
@@ -46,14 +45,11 @@ class NewTriggerActivity : AppCompatActivity() {
             val chooseActionDialog = ChooseActionDialog(this@NewTriggerActivity)
             chooseActionDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.next)) { dialog, _ ->
                 dialog.dismiss()
-
                 if (dialog is ChooseActionDialog) {
                     val chosenAction = dialog.spinner.selectedItem.toString()
-
                     addChosenAction(chosenAction)
                 }
             }
-
             chooseActionDialog.show()
         }
 
@@ -103,29 +99,16 @@ class NewTriggerActivity : AppCompatActivity() {
                     },
                     0, 0, true)
             timePicker.show()
+
         } else if (actionName == getString(R.string.action_wifi_name)) {
-            val items = arrayOf(
-                    getString(R.string.on).toUpperCase(),
-                    getString(R.string.off).toUpperCase())
-            val dialog = this.let {
-                val builder = AlertDialog.Builder(it)
-                builder
-                        .setTitle(R.string.action_wifi_dialog_title)
-                        .setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { dialog, itemIndex ->
-                            var action: WifiAction? = null
-                            if (itemIndex == 0) {
-                                action = WifiAction(this@NewTriggerActivity, WifiAction.WIFI_ON)
-                            } else {
-                                action = WifiAction(this@NewTriggerActivity, WifiAction.WIFI_OFF)
-                            }
-                            adapter.add(action)
-                            toast(getString(R.string.action_added, action.toString()))
-                            dialog.dismiss()
-                        })
-                builder.create()
+            val dialogHolder = WifiDialogHolder(this)
+            val dialog = dialogHolder.dialog
+            dialog.setOnDismissListener {
+                val action = WifiAction(this@NewTriggerActivity, dialogHolder.chosenValue)
+                adapter.add(action)
+                toast(getString(R.string.action_added, action.toString()))
             }
             dialog.show()
-
         }
     }
 
