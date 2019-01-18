@@ -4,13 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
-import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
-import de.niedermeyer.nfc_trigger.actions.ActionConstants
+import de.niedermeyer.nfc_trigger.actions.ActionTypes
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
+import de.niedermeyer.nfc_trigger.actions.wifi.WifiAction
 import kotlinx.serialization.ImplicitReflectionSerializer
-import kotlinx.serialization.json.JSON
-import kotlinx.serialization.parse
 import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.Charset
@@ -51,10 +49,13 @@ class NFCTagReader(val context: Context) {
 
     private fun convertJsonObjectToAction(json: JSONObject): Action? {
         val actionType = json.getInt("TYPE")
+        val params = json.getJSONArray("VAL")
         when (actionType) {
-            ActionConstants.ALARM -> {
-                val params = json.getJSONArray("VAL")
+            ActionTypes.ALARM -> {
                 return AlarmAction(context, params.getInt(0), params.getInt(1))
+            }
+            ActionTypes.WIFI -> {
+                return WifiAction(context, params.getInt(0))
             }
         }
 
