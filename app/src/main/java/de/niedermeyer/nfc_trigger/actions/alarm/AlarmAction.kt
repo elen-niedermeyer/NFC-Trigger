@@ -13,7 +13,6 @@ class AlarmAction() : Action() {
     override var TYPE: Int = ActionConstants.ALARM
     override var VAL: Array<Int> = arrayOf()
     var context: Context? = null
-
     var hours: Int
         get() = VAL[0]
         set(value) {
@@ -25,27 +24,9 @@ class AlarmAction() : Action() {
             VAL[1] = value
         }
 
-    override fun doAction() {
-        val intent = Intent(AlarmClock.ACTION_SET_ALARM)
-                .putExtra(AlarmClock.EXTRA_HOUR, VAL[0])
-                .putExtra(AlarmClock.EXTRA_MINUTES, VAL[1])
-        context!!.startActivity(intent)
-    }
-
-    override fun toString(): String {
-        return context!!.getString(R.string.action_alarm_tostring, VAL[0], VAL[1])
-    }
-
-    constructor(context: Context, hours: Int, minutes: Int) : this() {
+    constructor (context: Context, hours: Int, minutes: Int) : this() {
         this.context = context
         VAL = arrayOf(hours, minutes)
-    }
-
-    private constructor (src: Parcel?) : this() {
-        if (src is Parcel){
-            TYPE = src.readInt()
-            VAL = src.createIntArray().toTypedArray()
-        }
     }
 
     companion object CREATOR: Parcelable.Creator<AlarmAction>{
@@ -53,9 +34,25 @@ class AlarmAction() : Action() {
             return arrayOfNulls(size)
         }
 
-        override fun createFromParcel(source: Parcel?): AlarmAction {
-            return AlarmAction(source)
+        override fun createFromParcel(source: Parcel?): AlarmAction? {
+            if (source is Parcel){
+                val action = AlarmAction()
+                action.TYPE = source.readInt()
+                action.VAL = source.createIntArray().toTypedArray()
+                return action
+            }
+            return null
         }
+    }
 
+    override fun doAction() {
+        val intent = Intent(AlarmClock.ACTION_SET_ALARM)
+                .putExtra(AlarmClock.EXTRA_HOUR, hours)
+                .putExtra(AlarmClock.EXTRA_MINUTES, minutes)
+        context!!.startActivity(intent)
+    }
+
+    override fun toString(): String {
+        return context!!.getString(R.string.action_alarm_tostring, hours, minutes)
     }
 }
