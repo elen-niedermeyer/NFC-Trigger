@@ -8,6 +8,8 @@ import de.niedermeyer.nfc_trigger.R
  * Manages the dialog for creating a wifi action. Gives the chosen values.
  *
  * @param context
+ *
+ * @author Elen Niedermeyer, last update 2019-01-30
  */
 class WifiDialogHolder(context: Context) {
 

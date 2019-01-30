@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 /**
  * Superclass for all actions.
+ *
+ * @author Elen Niedermeyer, last update 2019-01-30
  */
 @Serializable
 abstract class Action {

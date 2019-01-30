@@ -23,24 +23,40 @@ import kotlinx.android.synthetic.main.dialog_spinner.*
 import org.jetbrains.anko.toast
 import java.util.*
 
+/**
+ * Activity to make an action list and write it to an nfc tag.
+ *
+ * @author Elen Niedermeyer, last update 2019-01-30
+ */
 class NewTriggerActivity : AppCompatActivity() {
 
+    /** adapter with action list */
     private lateinit var adapter: ActionListAdapter
+
+    /** nfc tag writer */
     private lateinit var nfcWriter: NFCTagWriter
 
+    /** Key for saving the action list in instance state */
     private val actionsKey: String = "savedActions"
 
+    /**
+     * @see android.support.v7.app.AppCompatActivity#onCreate(savedInstanceState: Bundle?)
+     * Initialize fields and buttons.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_trigger)
 
+        // initialize the nfc tag writer
         nfcWriter = NFCTagWriter(this)
         val pendingIntent = PendingIntent.getActivity(
                 this, 0, Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0)
+        // set the writing action to the button
         activity_new_trigger_btn_write.setOnClickListener {
             nfcWriter.activateNfcIntents(pendingIntent)
         }
 
+        // set the action to the button for adding an action
         activity_new_trigger_btn_add.setOnClickListener {
             val chooseActionDialog = ChooseActionDialog(this@NewTriggerActivity)
             chooseActionDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.next)) { dialog, _ ->
@@ -64,12 +80,21 @@ class NewTriggerActivity : AppCompatActivity() {
         activity_new_trigger_actions.adapter = adapter
     }
 
+    /**
+     * @see android.support.v7.app.AppCompatActivity#onSaveInstanceState(outState: Bundle?)
+     * Saves the action list.
+     */
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
 
         outState?.putSerializable(actionsKey, adapter.values)
     }
 
+    /**
+     * @see android.support.v7.app.AppCompatActivity#onResume()
+     * Check if nfc is enabled and display a containing dialog is not.
+     * Enableds/Disables the write button depending on nfc setting.
+     */
     override fun onResume() {
         super.onResume()
 
@@ -82,36 +107,20 @@ class NewTriggerActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * @see android.support.v7.app.AppCompatActivity#onPause()
+     * Deactivates the nfc intents.
+     */
     override fun onPause() {
         super.onPause()
 
         nfcWriter.deactivateNfcIntents()
     }
 
-    private fun addChosenAction(actionName: String) {
-
-        if (actionName == getString(R.string.action_alarm_name)) {
-            val timePicker = TimePickerDialog(this@NewTriggerActivity,
-                    TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                        val action = AlarmAction(this@NewTriggerActivity, hourOfDay, minute)
-                        adapter.add(action)
-                        toast(getString(R.string.action_added, action.toString()))
-                    },
-                    0, 0, true)
-            timePicker.show()
-
-        } else if (actionName == getString(R.string.action_wifi_name)) {
-            val dialogHolder = WifiDialogHolder(this)
-            val dialog = dialogHolder.dialog
-            dialog.setOnDismissListener {
-                val action = WifiAction(this@NewTriggerActivity, dialogHolder.chosenValue)
-                adapter.add(action)
-                toast(getString(R.string.action_added, action.toString()))
-            }
-            dialog.show()
-        }
-    }
-
+    /**
+     * @see android.support.v7.app.AppCompatActivity#onNewIntent(intent: Intent)
+     * Writes an nfc tag if possible. Shows a message about the success.
+     */
     override fun onNewIntent(intent: Intent) {
         val tagFromIntent: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
 
@@ -126,6 +135,47 @@ class NewTriggerActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Displays a dialog to specify the chosen action, if necessary.
+     * Adds the action to the list of {@link #adapter}.
+     *
+     * @param actionName name of the action
+     */
+    private fun addChosenAction(actionName: String) {
+
+        if (actionName == getString(R.string.action_alarm_name)) {
+            // alarm action
+            // makes time picker dialog
+            val timePicker = TimePickerDialog(this@NewTriggerActivity,
+                    TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                        // create action with the given time and add it to the list
+                        val action = AlarmAction(this@NewTriggerActivity, hourOfDay, minute)
+                        adapter.add(action)
+                        toast(getString(R.string.action_added, action.toString()))
+                    },
+                    0, 0, true)
+            // show dialog
+            timePicker.show()
+
+        } else if (actionName == getString(R.string.action_wifi_name)) {
+            // wifi action
+            // makes a dialog to choose on/off
+            val dialogHolder = WifiDialogHolder(this)
+            val dialog = dialogHolder.dialog
+            dialog.setOnDismissListener {
+                // create action with the given value and add it to the list
+                val action = WifiAction(this@NewTriggerActivity, dialogHolder.chosenValue)
+                adapter.add(action)
+                toast(getString(R.string.action_added, action.toString()))
+            }
+            // show dialog
+            dialog.show()
+        }
+    }
+
+    /**
+     * Makes a short vibration.
+     */
     private fun vibrateShortly() {
         val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

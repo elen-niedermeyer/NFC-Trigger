@@ -14,7 +14,7 @@ import de.niedermeyer.nfc_trigger.actions.ActionTypes
  * @param hours the number of hours, allowed are values between 0 and 23 (including both)
  * @param minutes the number of minutes, allowed are values between 0 and 59 (including both)
  *
- * @author Elen Niedermeyer
+ * @author Elen Niedermeyer, last update 2019-01-30
  */
 class AlarmAction(val context: Context, var hours: Int, var minutes: Int) : Action() {
 

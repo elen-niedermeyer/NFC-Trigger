@@ -14,6 +14,14 @@ import kotlinx.android.synthetic.main.activity_new_trigger_action_bar.view.*
 import org.jetbrains.anko.toast
 import java.util.*
 
+/**
+ * Adapter for the list that displays all chosen actions.
+ *
+ * @param adapterContext
+ * @param values the list of actions to display
+ *
+ * @author Milan Hoellner, last update 2019-01-30 by Elen Niedermeyer
+ */
 class ActionListAdapter(private val adapterContext: Context, var values: LinkedList<Action>) : ArrayAdapter<Action>(adapterContext, -1, values) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
