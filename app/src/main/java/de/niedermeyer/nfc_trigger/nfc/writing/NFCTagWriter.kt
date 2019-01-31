@@ -17,6 +17,13 @@ import kotlinx.serialization.json.JSON
 import kotlinx.serialization.list
 import java.nio.charset.Charset
 
+/**
+ * Handles all activities that are needed to write to a nfc tag.
+ *
+ * @param context
+ *
+ * @author Elen Niedermeyer, last update 2019-01-30
+ */
 class NFCTagWriter(private val context: Context) {
 
     /**
@@ -25,7 +32,7 @@ class NFCTagWriter(private val context: Context) {
     private val nfcAdapter: NfcAdapter = NfcAdapter.getDefaultAdapter(context)
 
     /**
-     * Enables the possiblity to detect an NFC tag in writing mode.
+     * Enables the possibility to detect an NFC tag in writing mode.
      *
      * @param pendingIntent
      */

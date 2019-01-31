@@ -7,11 +7,17 @@ import android.nfc.NfcAdapter
 import android.provider.Settings
 import de.niedermeyer.nfc_trigger.R
 
-
+/**
+ * Handles checking if nfc option is enabled and if not, reminding the user to turn it on.
+ *
+ * @param context
+ *
+ * @author Elen Niedermeyer, last update 2019-01-30
+ */
 class NFCSettingChecker(val context: Context) {
 
     /**
-     * Displays a dialog is NFC is not enabled. Does nothing otherwise.
+     * Displays a dialog if NFC is not enabled. Does nothing otherwise.
      */
     fun checkNFCSetting() {
         if (!isNFCEnabled()) {
@@ -29,6 +35,9 @@ class NFCSettingChecker(val context: Context) {
         return nfcAdapter.isEnabled
     }
 
+    /**
+     * Creates and shows a dialog to prompt the user to enable nfc.
+     */
     private fun displayNFCSettingsDialog() {
         AlertDialog.Builder(context)
                 .setTitle(R.string.enable_nfc)
@@ -38,6 +47,9 @@ class NFCSettingChecker(val context: Context) {
                 .show()
     }
 
+    /**
+     * Opens the nfc settings through an intent.
+     */
     private fun openNFCSettings() {
         val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
         context.startActivity(intent)
