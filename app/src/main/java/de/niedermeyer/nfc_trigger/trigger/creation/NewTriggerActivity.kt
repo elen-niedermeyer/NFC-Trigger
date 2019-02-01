@@ -92,7 +92,7 @@ class NewTriggerActivity : AppCompatActivity() {
 
     /**
      * @see android.support.v7.app.AppCompatActivity#onResume()
-     * Check if nfc is enabled and display a containing dialog is not.
+     * Check if nfc is enabled and display a containing dialog if not.
      * Enableds/Disables the write button depending on nfc setting.
      */
     override fun onResume() {

@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 abstract class Action {
 
-    /** the actions type, one value of {@link ActionConstants} */
+    /** the actions type, one value of {@link ActionTypes} */
     abstract var TYPE: Int
 
     /** values if needed for this action */

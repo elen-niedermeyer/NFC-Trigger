@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_trigger_overview.*
 /**
  * Start activity.
  *
- * @author Elen Niedermeyer, last update 2019-01-30
+ * @author Elen Niedermeyer, last update 2019-02-01
  */
 class TriggerOverviewActivity : AppCompatActivity() {
 
@@ -27,7 +27,7 @@ class TriggerOverviewActivity : AppCompatActivity() {
 
     /**
      * @see android.support.v7.app.AppCompatActivity#onResume()
-     * Check if nfc is enabled and display a containing dialog is not.
+     * Check if nfc is enabled and display a containing dialog if not.
      */
     override fun onResume() {
         super.onResume()
