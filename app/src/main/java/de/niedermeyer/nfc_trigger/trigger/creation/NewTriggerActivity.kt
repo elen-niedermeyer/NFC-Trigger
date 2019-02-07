@@ -71,7 +71,8 @@ class NewTriggerActivity : AppCompatActivity() {
 
         // restore saved actions from instance state
         val savedActions = savedInstanceState?.getSerializable(actionsKey)
-        if (savedActions is LinkedList<*> && savedActions.count() > 0) {
+        if (savedActions is LinkedList<*> && savedActions.isNotEmpty() && savedActions[0] is Action ) {
+            // cast to LinkedList<Action> is checked
             adapter = ActionListAdapter(this@NewTriggerActivity, savedActions as LinkedList<Action>)
         } else {
             adapter = ActionListAdapter(this@NewTriggerActivity, LinkedList())
