@@ -8,12 +8,40 @@ import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.ActionTypes
 
-
 /**
  * Action that presents the action of turning wifi on/off.
  * @author Elen Niedermeyer, Milan Höllner, 2019-02-07
  */
 class WifiAction() : Action() {
+
+    /**
+     * constants for the wifi action
+     * @see Parcelable.Creator
+     */
+    companion object CREATOR : Parcelable.Creator<WifiAction> {
+
+        /** Value for saying the wifi should be turned on*/
+        const val WIFI_ON = 1
+
+        /** Value for saying the wifi should be turned off*/
+        const val WIFI_OFF = 0
+
+        /** @see Parcelable.Creator.newArray */
+        override fun newArray(size: Int): Array<WifiAction?> {
+            return arrayOfNulls(size)
+        }
+
+        /** @see Parcelable.Creator.createFromParcel */
+        override fun createFromParcel(source: Parcel?): WifiAction? {
+            if (source is Parcel) {
+                val action = WifiAction()
+                action.TYPE = source.readInt()
+                action.VAL = source.createIntArray().toTypedArray()
+                return action
+            }
+            return null
+        }
+    }
 
     /** @see de.niedermeyer.nfc_trigger.actions.Action#TYPE */
     override var TYPE: Int = ActionTypes.WIFI
@@ -32,41 +60,14 @@ class WifiAction() : Action() {
         }
 
     /**
+     * Constructor with parameter
+     *
      * @param context
      * @param toTurnOn here are the values {@link #WIFI_ON} and {@link #WIFI_OFF} allowed
      */
-    constructor(context: Context, toTurnOn: Int): this() {
+    constructor(context: Context, toTurnOn: Int) : this() {
         this.context = context
         VAL = arrayOf(toTurnOn)
-    }
-
-    /**
-     * constants for the wifi action
-     * @see Parcelable.Creator
-     */
-    companion object CREATOR: Parcelable.Creator<WifiAction> {
-
-        /** @see Parcelable.Creator.newArray */
-        override fun newArray(size: Int): Array<WifiAction?> {
-            return arrayOfNulls(size)
-        }
-
-        /** @see Parcelable.Creator.createFromParcel */
-        override fun createFromParcel(source: Parcel?): WifiAction? {
-            if (source is Parcel) {
-                val action = WifiAction()
-                action.TYPE = source.readInt()
-                action.VAL = source.createIntArray().toTypedArray()
-                return action
-            }
-            return null
-        }
-
-        /** Value for saying the wifi should be turned on*/
-        const val WIFI_ON = 1
-
-        /** Value for saying the wifi should be turned off*/
-        const val WIFI_OFF = 0
     }
 
     /**
@@ -75,7 +76,7 @@ class WifiAction() : Action() {
      */
     override fun doAction() {
         val wifiManager = context!!.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        if (toTurnOn == WIFI_ON) {
+        if (toTurnOn == WifiAction.WIFI_ON) {
             wifiManager.isWifiEnabled = true
         } else {
             wifiManager.isWifiEnabled = false
@@ -84,10 +85,11 @@ class WifiAction() : Action() {
 
     /** @see Object#toString() */
     override fun toString(): String {
-        if (toTurnOn == WIFI_OFF) {
+        if (toTurnOn == WifiAction.WIFI_OFF) {
             return context!!.getString(R.string.action_wifi_tostring, context!!.getString(R.string.off))
         } else {
             return context!!.getString(R.string.action_wifi_tostring, context!!.getString(R.string.on))
         }
     }
+
 }

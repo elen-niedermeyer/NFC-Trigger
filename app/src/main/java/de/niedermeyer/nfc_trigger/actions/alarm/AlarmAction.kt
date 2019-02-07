@@ -17,8 +17,31 @@ import de.niedermeyer.nfc_trigger.actions.ActionTypes
 
 class AlarmAction() : Action() {
 
+    /**
+     * Needed to be able to create an action from a parcel
+     * @see Parcelable.Creator
+     */
+    companion object CREATOR : Parcelable.Creator<AlarmAction> {
+
+        /** @see Parcelable.Creator.newArray */
+        override fun newArray(size: Int): Array<AlarmAction?> {
+            return arrayOfNulls(size)
+        }
+
+        /** @see Parcelable.Creator.createFromParcel */
+        override fun createFromParcel(source: Parcel?): AlarmAction? {
+            if (source is Parcel) {
+                val action = AlarmAction()
+                action.TYPE = source.readInt()
+                action.VAL = source.createIntArray().toTypedArray()
+                return action
+            }
+            return null
+        }
+    }
+
     /** @see de.niedermeyer.nfc_trigger.actions.Action#TYPE */
-    override var TYPE: Int = ActionTypes.ALARM
+    override var TYPE = ActionTypes.ALARM
 
     /** @see de.niedermeyer.nfc_trigger.actions.Action#VAL */
     override var VAL: Array<Int> = arrayOf()
@@ -41,6 +64,8 @@ class AlarmAction() : Action() {
         }
 
     /**
+     * Constructor with parameter
+     *
      * @param context
      * @param hours the number of hours, allowed are values between 0 and 23 (including both)
      * @param minutes the number of minutes, allowed are values between 0 and 59 (including both)
@@ -48,29 +73,6 @@ class AlarmAction() : Action() {
     constructor (context: Context, hours: Int, minutes: Int) : this() {
         this.context = context
         VAL = arrayOf(hours, minutes)
-    }
-
-    /**
-     * Needed to be able to create an action from a parcel
-     * @see Parcelable.Creator
-     */
-    companion object CREATOR: Parcelable.Creator<AlarmAction> {
-
-        /** @see Parcelable.Creator.newArray */
-        override fun newArray(size: Int): Array<AlarmAction?> {
-            return arrayOfNulls(size)
-        }
-
-        /** @see Parcelable.Creator.createFromParcel */
-        override fun createFromParcel(source: Parcel?): AlarmAction? {
-            if (source is Parcel){
-                val action = AlarmAction()
-                action.TYPE = source.readInt()
-                action.VAL = source.createIntArray().toTypedArray()
-                return action
-            }
-            return null
-        }
     }
 
     /**
@@ -88,4 +90,5 @@ class AlarmAction() : Action() {
     override fun toString(): String {
         return context!!.getString(R.string.action_alarm_tostring, hours, minutes)
     }
+
 }
