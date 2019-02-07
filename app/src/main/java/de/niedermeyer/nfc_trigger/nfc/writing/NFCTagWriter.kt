@@ -112,9 +112,9 @@ class NFCTagWriter(private val context: Context) {
             it.connect()
 
             // proof tag's size
-            var maxsize = it.maxSize
-            var size = nfcMessage.toByteArray().size
-            if (it.maxSize < nfcMessage.toByteArray().size) {
+            val maxSize = it.maxSize
+            val size = nfcMessage.toByteArray().size
+            if (maxSize < size) {
                 // Message to large to write to NFC tag
                 throw Exception(context.getString(R.string.writing_error_size))
             }

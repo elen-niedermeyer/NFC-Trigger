@@ -44,7 +44,7 @@ class WifiAction() : Action() {
     }
 
     /** @see de.niedermeyer.nfc_trigger.actions.Action#TYPE */
-    override var TYPE: Int = ActionTypes.WIFI
+    override var TYPE = ActionTypes.WIFI
 
     /** @see de.niedermeyer.nfc_trigger.actions.Action#VAL */
     override var VAL: Array<Int> = arrayOf()
