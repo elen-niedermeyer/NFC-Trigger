@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 /**
  * Superclass for all actions.
  *
- * @author Elen Niedermeyer, last update 2019-01-30
+ * @author Elen Niedermeyer, Milan Höllner, last update 2019-02-07
  */
 @Serializable
 abstract class Action : Parcelable {
@@ -21,10 +21,12 @@ abstract class Action : Parcelable {
     /** the actions execution */
     abstract fun doAction()
 
+    /** @see Parcelable.describeContents */
     override fun describeContents(): Int {
         return hashCode()
     }
 
+    /** @see Parcelable.writeToParcel */
     override fun writeToParcel(dest: Parcel?, flags: Int) {
         dest?.writeInt(TYPE)
         dest?.writeArray(VAL)
