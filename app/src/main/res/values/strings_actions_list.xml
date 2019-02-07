@@ -2,5 +2,6 @@
 <resources>
     <string-array name="actions_list">
         <item>@string/action_alarm_name</item>
+        <item>@string/action_wifi_name</item>
     </string-array>
 </resources>
