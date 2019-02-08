@@ -1,35 +1,24 @@
-package de.niedermeyer.nfc_trigger.trigger.creation
+package de.niedermeyer.nfc_trigger.trigger.creation.onOffDialogs
 
 import android.app.AlertDialog
 import android.content.Context
 import de.niedermeyer.nfc_trigger.R
 
 /**
- * Manages the dialog for creating a wifi action. Gives the chosen values.
+ * Manages the dialog for turning an on/off action. Gives the chosen values.
  *
  * @param context
  *
- * @author Elen Niedermeyer, last update 2019-01-30
+ * @author Elen Niedermeyer, last update 2019-02-08
  */
-class WifiDialogHolder(context: Context) {
-
-    /**
-     * Constructor wit parameter.
-     *
-     * @param context
-     * @param currentValue if there's a value to select, it's given here
-     */
-    constructor(context: Context, currentValue: Int) : this(context) {
-        this.chosenValue = currentValue
-    }
+abstract class OnOffDialogHolder(context: Context) {
 
     /** the dialog */
     var dialog: AlertDialog
         private set
 
-    /** the value chosen by the user */
+    /** the value chosen by the user, it's 0 for off and 1 for on when dialog dismisses */
     var chosenValue = -1
-        private set
 
     /** array of items to set as choice in the dialog */
     private val items = arrayOf(
@@ -37,10 +26,9 @@ class WifiDialogHolder(context: Context) {
             context.getString(R.string.on).toUpperCase())
 
     init {
-        // make a builder, set title and choices
+        // make a builder, set choices
         val builder = AlertDialog.Builder(context)
         builder
-                .setTitle(R.string.action_wifi_dialog_title)
                 .setSingleChoiceItems(items, chosenValue) { dialog, itemIndex ->
                     // index in array is the same like the value
                     chosenValue = itemIndex

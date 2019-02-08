@@ -7,6 +7,7 @@ import android.nfc.NfcAdapter
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.ActionTypes
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
+import de.niedermeyer.nfc_trigger.actions.mobileData.MobileDataAction
 import de.niedermeyer.nfc_trigger.actions.wifi.WifiAction
 import kotlinx.serialization.ImplicitReflectionSerializer
 import org.json.JSONArray
@@ -95,6 +96,9 @@ class NFCTagReader(val context: Context) {
             }
             ActionTypes.WIFI -> {
                 return WifiAction(context, params.getInt(0))
+            }
+            ActionTypes.MOBILE_DATA -> {
+                return MobileDataAction(context, params.getInt(0))
             }
         }
 

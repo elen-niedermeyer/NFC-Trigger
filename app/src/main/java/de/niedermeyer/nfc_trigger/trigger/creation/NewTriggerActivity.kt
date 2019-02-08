@@ -15,9 +15,12 @@ import android.support.v7.app.AppCompatActivity
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
+import de.niedermeyer.nfc_trigger.actions.mobileData.MobileDataAction
 import de.niedermeyer.nfc_trigger.actions.wifi.WifiAction
 import de.niedermeyer.nfc_trigger.nfc.setting.NFCSettingChecker
 import de.niedermeyer.nfc_trigger.nfc.writing.NFCTagWriter
+import de.niedermeyer.nfc_trigger.trigger.creation.onOffDialogs.MobileDataDialogHolder
+import de.niedermeyer.nfc_trigger.trigger.creation.onOffDialogs.WifiDialogHolder
 import kotlinx.android.synthetic.main.activity_new_trigger.*
 import kotlinx.android.synthetic.main.dialog_spinner.*
 import org.jetbrains.anko.toast
@@ -166,6 +169,20 @@ class NewTriggerActivity : AppCompatActivity() {
             dialog.setOnDismissListener {
                 // create action with the given value and add it to the list
                 val action = WifiAction(this@NewTriggerActivity, dialogHolder.chosenValue)
+                adapter.add(action)
+                toast(getString(R.string.action_added, action.toString()))
+            }
+            // show dialog
+            dialog.show()
+
+        } else if(actionName==getString(R.string.action_mobile_data_name)){
+            // mobile data action
+            // makes a dialog to choose on/off
+            val dialogHolder = MobileDataDialogHolder(this)
+            val dialog=dialogHolder.dialog
+            dialog.setOnDismissListener {
+                // create action with the given value and add it to the list
+                val action = MobileDataAction(this@NewTriggerActivity, dialogHolder.chosenValue)
                 adapter.add(action)
                 toast(getString(R.string.action_added, action.toString()))
             }

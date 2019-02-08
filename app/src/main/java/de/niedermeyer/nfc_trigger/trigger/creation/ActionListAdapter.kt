@@ -9,7 +9,10 @@ import android.widget.ArrayAdapter
 import de.niedermeyer.nfc_trigger.R
 import de.niedermeyer.nfc_trigger.actions.Action
 import de.niedermeyer.nfc_trigger.actions.alarm.AlarmAction
+import de.niedermeyer.nfc_trigger.actions.mobileData.MobileDataAction
 import de.niedermeyer.nfc_trigger.actions.wifi.WifiAction
+import de.niedermeyer.nfc_trigger.trigger.creation.onOffDialogs.MobileDataDialogHolder
+import de.niedermeyer.nfc_trigger.trigger.creation.onOffDialogs.WifiDialogHolder
 import kotlinx.android.synthetic.main.activity_new_trigger_action_bar.view.*
 import org.jetbrains.anko.toast
 import java.util.*
@@ -54,6 +57,22 @@ class ActionListAdapter(private val adapterContext: Context, var values: LinkedL
             actionBarLayout.activity_new_trigger_action_bar_btn_edit.setOnClickListener {
                 // get dialog from holder with selected value
                 val dialogHolder = WifiDialogHolder(context, currentAction.toTurnOn)
+                val dialog = dialogHolder.dialog
+                // save new value with action when the dialog is dismissed
+                dialog.setOnDismissListener {
+                    currentAction.toTurnOn = dialogHolder.chosenValue
+                    notifyDataSetChanged()
+                    // show toast as confirmation
+                    context.toast(context.getString(R.string.action_updated, currentAction.toString()))
+                }
+                dialog.show()
+            }
+
+        } else if(currentAction is MobileDataAction){
+            // mobile data action
+            actionBarLayout.activity_new_trigger_action_bar_btn_edit.setOnClickListener {
+                // get dialog from holder with selected value
+                val dialogHolder = MobileDataDialogHolder(context, currentAction.toTurnOn)
                 val dialog = dialogHolder.dialog
                 // save new value with action when the dialog is dismissed
                 dialog.setOnDismissListener {

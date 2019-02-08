@@ -13,11 +13,17 @@
     <string name="settings">Open settings</string>
 
     <!-- actions -->
+    <!-- alarm action -->
     <string name="action_alarm_name">Alarm</string>
     <string name="action_alarm_tostring">Alarm: %1$02d:%2$02d</string>
+    <!-- wifi actin -->
     <string name="action_wifi_name">WiFi</string>
     <string name="action_wifi_tostring">WiFi %1$s</string>
     <string name="action_wifi_dialog_title">Turning WiFi \.\.\.</string>
+    <!-- mobile data action -->
+    <string name="action_mobile_data_name">Mobile Data</string>
+    <string name="action_mobile_data_tostring">Mobile Data %1$s</string>
+    <string name="action_mobile_data_dialog_title">Turning Mobile Data \.\.\.</string>
 
     <!-- enable nfc -->
     <string name="enable_nfc">Enable NFC</string>

@@ -14,6 +14,9 @@ class ActionTypes {
 
         /** constant for action type WIFI */
         const val WIFI = 2
+
+        /** constant for action type MOBILE_DATA */
+        const val MOBILE_DATA = 3
     }
 
 }
